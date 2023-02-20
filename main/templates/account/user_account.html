@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+{%block title%} Profile {%endblock title%}
+
+{%block body_content%}
+{% if request.user.is_authenticated %}
+<div class="btn-group mt-1" role="group" aria-label="Basic example">
+    {% if request.user.role == "TE" %}
+    <a type="button" class="btn btn-primary" href="{% url 'userQuiz' %}">My Quizez</a>&nbsp;
+    <a type="button" class="btn btn-primary" href="{% url 'createQuiz' %}">Create Quiz</a>&nbsp;
+    <a type="button" class="btn btn-primary" href="{% url 'user_details-detail' request.user %}" >My Account Details</a>&nbsp;
+    {% elif request.user.role == "ST" %}
+    <a type="button" class="btn btn-primary" href="{% url 'stdData' request.user %}">My Data</a>&nbsp;
+    <a type="button" class="btn btn-primary" href="{% url 'user_details-detail' request.user %}" >My Account Details</a>&nbsp;
+    {%endif%}
+    <a type="button" class="btn btn-primary" href="{% url 'createArticle' %}">Create Article</a>&nbsp;
+    <a type="button" class="btn btn-primary" href="{% url 'userArticles' %}">My Articles</a>&nbsp;
+</div>
+{%endif%}
+
+{%block user_body%}
+{%endblock user_body%}
+
+{%endblock body_content%}

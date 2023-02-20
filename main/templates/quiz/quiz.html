@@ -1,0 +1,39 @@
+{%extends 'base.html'%}
+{%load static%}
+{% load custom_filters %}
+{%block title%} Main {%endblock title%}
+
+{%block head%}
+<script src="{% static 'globals.js' %} " type="text/javascript"></script>
+<script src="{% static 'quiz/quiz.js' %} " type="text/javascript"></script>
+{%endblock head%}
+
+{%block body_content%}
+
+  <div class="card text-center border-dark mb-3" >
+    <div class="card-header" style="font-size: 26px;">All Quizes</div>
+    <ul class="list-group list-group-flush " id="all_quiz">
+      {% for quiz in result %}
+      <button type="button" class="btn btn-light btn-lg" onclick="select_quiz('{{request.user}}' ,'{{request.user.role}}', '{{quiz.items| get_key}}')">
+        &nbsp;<b>{{quiz.items| get_key}}</b>&nbsp;
+        <small style="font-size: 16px;">created by &nbsp;<b>{{quiz.items| get_key:"teacher"| fullname}}</b>
+        <p style="font-size: 14px; color: lightslategray;">at {{quiz.items| get_key:"created"| f_date}}</p>
+        </small>
+      </button>
+      {% endfor %}
+    </ul>
+  </div>
+  {% if next %}
+    <a type="button" class="btn btn-dark btn-lg" href="{{next}}">Next Page</a>
+  {% endif %}
+  {% if prev %}
+    <a type="button" class="btn btn-dark btn-lg" href="{{prev}}">Previous Page</a>
+  {% endif %}
+  
+  {% if request.user.is_authenticated %}
+    <div class="card" id="quiz"></div>
+  {% endif %}
+
+  
+{%endblock body_content%}
+

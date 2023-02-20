@@ -1,0 +1,63 @@
+{%extends 'account/user_account.html'%}
+{% load custom_filters %}
+{%load static%}
+
+{%block head%}
+<script src="{% static 'globals.js' %}"></script>
+<style>
+    .scroll{
+        max-height: 250px;
+        overflow-y: auto;
+    }
+</style>
+{%endblock head%}
+
+{%block user_body%}
+    <div class="container mt-5 btn-group-vertical">
+        <div class="btn-group-vertical dropright mt-1">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Attempted</button>
+            {% setvar data.items|get_key:"attempted" as attempted %}
+            <div class="dropdown-menu scroll" >
+                {% for attempt in attempted reversed %}
+                <label class="dropdown-item w-100"><b>{{attempt.0}}</b>&nbsp;  <small>at {{attempt.1|f_date}}</small></label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="btn-group-vertical dropright mt-1">
+            {% setvar data.items|get_key:"passed" as passed%}
+            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Passed</button>
+            <div class="dropdown-menu scroll">
+                {% for pass in passed reversed %}
+                <label class="dropdown-item w-100"><b>{{pass.0}}</b>&nbsp;  <small>at {{pass.1|f_date}}</small></label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="btn-group-vertical dropright mt-1">
+            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Failed</button>
+            {% setvar data.items|get_key:"failed" as failed %}
+            <div class="dropdown-menu scroll">
+                {% for fail in failed reversed %}
+                <label class="dropdown-item w-100"><b>{{fail.0}}</b>&nbsp;  <small>at {{fail.1|f_date}}</small></label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="btn-group-vertical dropright mt-1">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Cleared</button>
+            {% setvar data.items|get_key:"cleared" as completed %}
+            <div class="dropdown-menu scroll">
+                {% for complete in completed reversed %}
+                <label class="dropdown-item w-100"><b>{{complete.0}}</b>&nbsp;  <small>at {{complete.1|f_date}}</small></label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="btn-group-vertical dropright mt-1">
+            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Leaved</button>
+            {% setvar data.items|get_key:"leaved" as leaved %}
+            <div class="dropdown-menu scroll">
+                {% for leave in leaved reversed %}
+                <label class="dropdown-item w-100"><b>{{leave.0}}</b>&nbsp;  <small>at {{leave.1|f_date}}</small></label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{%endblock user_body%}

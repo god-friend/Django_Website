@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+{%load custom_filters%}
+{%load static%}
+{%block title%} Articles {%endblock title%}
+
+{%block head%}
+<script src="{% static 'globals.js' %}" type="text/javascript"></script>
+<script src="{% static 'article/article.js' %}" type="text/javascript"></script>
+{%endblock head%}
+
+{%block body_content%}
+
+<div class="card text-center border-dark mb-3">
+    <div class="card-header" style="font-size: 26px; font-weight:bold;">All Articles</div>
+    <ul class="list-group list-group-flush ">
+        {%for article in result%}
+        {% setvar article.items|get_key:'id' as id %}
+        {% setvar article.items|get_key:'created_by'|fullname as fullname%}
+        <button type="button" class="btn btn-light btn-lg" onclick="show_article('{{id}}', '{{fullname}}')">
+            <b>{{article.items|get_key}}</b>&nbsp;
+            <small style="font-size: 16px;">created by &nbsp;<b>{{fullname}}</b>
+            <p style="font-size: 14px; color: lightslategray;">at {{article.items| get_key:"created"| f_date}}</p>
+            </small>
+        </button>
+        {%endfor%}
+    </ul>
+</div>
+{%if prev %}
+<a type="button" class="btn btn-secondary btn-lg" href="{{prev}}">Previous</a>
+{%endif%}
+{%if next %}
+<a type="button" class="btn btn-secondary btn-lg" href="{{next}}">Next</a>
+{%endif%}
+
+
+<div class="container" id="article"></div>
+{%endblock body_content%}

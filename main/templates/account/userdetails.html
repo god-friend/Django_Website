@@ -1,0 +1,66 @@
+{%extends 'account/user_account.html'%}
+{% load custom_filters %}
+{%load static%}
+
+{%block head%}
+<script src="{% static 'globals.js' %}"></script>
+<script src="{% static 'quiz/m_detail.js' %}"></script>
+{%endblock head%}
+
+{%block user_body%}
+
+<div class="container mt-2">
+    <form id="user-detail" method="post">
+        
+        <div class="row">
+            <div class="col-sm-4">
+                <label><b>Firstname :: </b></label>
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="firstname" value="{{firstname}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label><b>Lastname :: </b></label>
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="lastname" value="{{lastname}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label><b>Username :: </b></label>
+            </div>
+            <div class="col-sm-8">
+                <input class="form-control-plaintext" name="username" value="{{username}}" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label><b>Last Login :: </b></label>
+            </div>
+            <div class="col-sm-8">
+                <label class="form-control-plaintext"><b>{{last_login| f_date}} </b></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label><b>Role :: </b></label>
+            </div>
+            <div class="col-sm-8">
+                {% if role == "TE" %}
+                <label class="form-control-plaintext"><b>Teacher </b></label>
+                {% elif role == "ST" %}
+                <input class="form-control-plaintext" type="text" placeholder="Student" readonly>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary w-100">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+{%endblock user_body%}

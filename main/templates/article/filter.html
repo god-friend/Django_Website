@@ -1,0 +1,22 @@
+{%extends 'base.html'%}
+{%load static%}
+{%load custom_filters%}
+
+{%block head%}
+<script src="{% static 'globals.js' %}" type="text/javascript"></script> 
+<script src="{% static 'article/article.js' %}" type="text/javascript"></script>
+<script src="{% static 'article/filterArticle.js' %}" type="text/javascript"></script>
+{%endblock head%}
+
+{%block body_content%}
+
+<div class="btn-group">
+    <button class="btn btn-primary" onclick="show_categories()">By Categories</button>&nbsp;
+    <button class="btn btn-primary" onclick="show_users()">By Users</button>
+</div>
+
+<div class="container mt-2" id="filter"></div>
+
+<div class="container" id="article"></div>
+
+{%endblock body_content%}

@@ -1,0 +1,36 @@
+{% extends 'account/user_account.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{%block head%}
+<script src="{% static 'globals.js' %}" type="text/javascript"></script>
+<script src="{% static 'article/m_article.js' %}" type="text/javascript"></script>
+{%endblock head%}
+
+
+{% block user_body %}
+<div class="card text-center border-dark mt-3">
+    <div class="card-header" style="font-size: 26px; font-weight:bold;">My Articles</div>
+    <ul class="list-group list-group-flush " id="all_quiz">
+        {%for article in result%}
+        {% setvar article.items|get_key:'id' as id %}
+        {% setvar article.items|get_key:'created_by'|fullname as fullname%}
+        <button type="button" class="btn btn-light btn-lg" onclick="edit_article('{{id}}')">
+            <b>{{article.items|get_key}}</b>&nbsp;
+            <small style="font-size: 16px;">
+            <p style="font-size: 14px; color: lightslategray;">at {{article.items| get_key:"created"| f_date}}</p>
+            </small>
+        </button>
+        {%endfor%}
+    </ul>
+</div>
+
+{%if next %}
+<a type="button" class="btn btn-secondary btn-lg" href="{{next}}">Next</a>
+{%endif%}
+{%if prev %}
+<a type="button" class="btn btn-secondary btn-lg" href="{{prev}}">Previous</a>
+{%endif%}
+<div class="container mt-2" id="edit-btns"></div>
+<div class="container" id="edit-article"></div>
+{% endblock user_body %}
