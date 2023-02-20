@@ -11,7 +11,7 @@ Change Directory to Environment Directory
 Activate the Environment
 >.\Scripts\activate
 
-Create a New folder Inside Virtual Evironment and clone the Repository inside that new folder
+ Clone the Repository inside Virtual Evironment 
 > git clone https://github.com/god-friend/Django_Website.git
 
 Install requrements.txt
