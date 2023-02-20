@@ -1,5 +1,6 @@
 from .models import Quiz, StudentData
 from rest_framework.serializers import ModelSerializer, Serializer
+from main.models import CustomUser
 
 class QuizSerializer(ModelSerializer):
     class Meta:
