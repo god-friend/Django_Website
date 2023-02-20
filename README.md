@@ -20,15 +20,27 @@ Change Directory
 Install requrements.txt
 >pip install -r requirements.txt
 
-run commands
->py manage.py makemigrations
+run commands exactly in this order
+>py manage.py makemigrations quiz
+
+>py manage.py migrate quiz
+
+>py manage.py makemigrations article
+
+>py manage.py migrate article
 
 >py manage.py migrate
 
 >py manage.py createsuperuser
 
+when creating superuser insert 'AD' in Role input
+('AD' is for Admin, 'TE' is for Teacher, 'ST' is for Student)
 and then start the server after creating admin user
+
 >py manage.py runserver
+
+After Starting the Server first please load localhost "127.0.0.1:8000"
+so the index view can create Groups and then  you are good to go
 
 ### Features of Website
 1. A Teacher can Create Quiz and check Quiz Created by other Teachers
