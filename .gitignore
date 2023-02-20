@@ -4,5 +4,6 @@ quiz/migrations/*
 main/migrations/*
 article/migrations/*
 !quiz/migrations/__init__.py
-
+!main/migrations/__init__.py
+!article/migrations__init__.py
 !.gitignore
