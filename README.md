@@ -21,13 +21,7 @@ Install requrements.txt
 >pip install -r requirements.txt
 
 run commands exactly in this order
->py manage.py makemigrations quiz
-
->py manage.py migrate quiz
-
->py manage.py makemigrations article
-
->py manage.py migrate article
+>py manage.py makemigrations
 
 >py manage.py migrate
 
