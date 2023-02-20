@@ -14,6 +14,9 @@ Activate the Environment
  Clone the Repository inside Virtual Evironment 
 > git clone https://github.com/god-friend/Django_Website.git
 
+Change Directory
+>cd Django_Website
+
 Install requrements.txt
 >pip install -r requirements.txt
 
