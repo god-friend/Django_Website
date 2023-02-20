@@ -31,17 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'main',
+    'quiz',
+    'article',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'quiz',
     'rest_framework',
     'django_filters',
-    'article',
-    'main',
 ]
 
 MIDDLEWARE = [
@@ -127,4 +127,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'quiz.CustomUser'
+AUTH_USER_MODEL = 'main.CustomUser'

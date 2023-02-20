@@ -1,7 +1,7 @@
 from django.template import Library
 from json import dumps
 from datetime import datetime
-from quiz.models import CustomUser
+from main.models import CustomUser
 
 register = Library()
 

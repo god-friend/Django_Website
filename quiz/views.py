@@ -2,13 +2,14 @@ from django.contrib.auth import login, logout, authenticate
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN, HTTP_400_BAD_REQUEST
-from .serializers import UserSerializer, QuizSerializer, CategoriesSerializer, TeacherSerializer, StudentDataSerializer
+from .serializers import QuizSerializer, CategoriesSerializer, TeacherSerializer, StudentDataSerializer
+from main.serializers import UserSerializer
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from .models import Quiz, CustomUser, StudentData
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly, IsAuthenticated
 from rest_framework.generics import ListAPIView
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from .paginators import AllQuizPagination
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend

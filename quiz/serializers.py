@@ -1,29 +1,5 @@
-from .models import CustomUser, Quiz, StudentData
+from .models import Quiz, StudentData
 from rest_framework.serializers import ModelSerializer, Serializer
-from django.contrib.auth.models import Group
-
-
-class UserSerializer(ModelSerializer):
-
-    class Meta:
-        model = CustomUser
-        fields = '__all__'
-
-    def create(self, validated_data):
-        user = validated_data['username']
-        fname = validated_data['firstname']
-        lname = validated_data['lastname']
-        utype = validated_data['role']
-        pwd = validated_data['password']
-        new_user = CustomUser.objects.create_user(username=user, password=pwd, role=utype, firstname=fname, lastname=lname)
-        if utype == 'TE':
-            teacher = Group.objects.get(name="Teachers")
-            new_user.groups.add(teacher)
-        elif utype == 'ST':
-            student = Group.objects.get(name="Students")
-            new_user.groups.add(student)
-        return new_user
-
 
 class QuizSerializer(ModelSerializer):
     class Meta:

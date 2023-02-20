@@ -1,8 +1,10 @@
 from django.shortcuts import redirect, render, HttpResponse
 from django.contrib.auth import logout, login
 from rest_framework.decorators import api_view
-from quiz.models import Quiz, CustomUser, StudentData
-from quiz.serializers import QuizSerializer, UserSerializer, StudentDataSerializer
+from quiz.models import Quiz, StudentData
+from quiz.serializers import QuizSerializer, StudentDataSerializer
+from .serializers import UserSerializer
+from .models import CustomUser
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from quiz.paginators import AllQuizPagination
@@ -25,24 +27,12 @@ def get_fullname(request, pk: str):
 
 @api_view(['get'])
 def index(request):
-    groups = Group.objects.all()
-    if not groups.exists():
-        perm = Permission.objects.filter(content_type__model='quiz')
-        st_perm = Permission.objects.get(codename="view_quiz",content_type__model='quiz')
-        stData_perm = Permission.objects.filter(content_type__model='studentdata')
-        T_group = Group.objects.create(name='Teachers')
-        S_group = Group.objects.create(name='Students')
-        T_group.permissions.set(perm)
-        S_group.permissions.set(stData_perm)
-        S_group.permissions.add(st_perm.id)
-        
     first5Quiz = Quiz.objects.order_by("-created")[:5]
     first5Articles = Articles.objects.order_by("-created")[:5]
     result = {
         "quizes": first5Quiz,
         "articles": first5Articles,
     }
-    # print(first5Quiz)
     return render(request, "index.html", context=result)
 
 @api_view(['get','post'])
