@@ -15,6 +15,7 @@ from article.models import Articles
 from article.serializers import ArticleSerializer
 from article.paginators import ArticlePagination
 from rest_framework.authentication import authenticate
+from django.contrib.auth.models import Group, Permission
 
 
 @api_view(['get'])
@@ -24,6 +25,17 @@ def get_fullname(request, pk: str):
 
 @api_view(['get'])
 def index(request):
+    groups = Group.objects.all()
+    if not groups.exists():
+        perm = Permission.objects.filter(content_type__model='quiz')
+        st_perm = Permission.objects.get(codename="view_quiz",content_type__model='quiz')
+        stData_perm = Permission.objects.filter(content_type__model='studentdata')
+        T_group = Group.objects.create(name='Teachers')
+        S_group = Group.objects.create(name='Students')
+        T_group.permissions.set(perm)
+        S_group.permissions.set(stData_perm)
+        S_group.permissions.add(st_perm.id)
+        
     first5Quiz = Quiz.objects.order_by("-created")[:5]
     first5Articles = Articles.objects.order_by("-created")[:5]
     result = {
