@@ -40,11 +40,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)  
     is_active = models.BooleanField(default=True)
     Choices = [
-        ('AD', 'Admins'),
+        ('AD', 'Admin'),
         ('TE', 'Teacher'),
         ('ST', 'Student'),
     ]
-    role = models.CharField(max_length=2, choices=Choices)
+    role = models.CharField(max_length=2, choices=Choices, default=Choices[0][0])
 
     objects = CustomUserManager()
     USERNAME_FIELD = 'username'
