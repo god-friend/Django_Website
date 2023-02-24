@@ -38,6 +38,7 @@ Then start the server after creating admin user
 4. Teacher can Edit thier Quiz from My Account
 5. Articles can be created by either Teacher or Student
 6. Editing the Article by user
+7. User can Search Article or Quiz
 
 ### This Website is Tested in Brave Browser and Microsoft Edge in Windows 10
 
