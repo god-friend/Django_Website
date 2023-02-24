@@ -1,7 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import Articles
 from .serializers import ArticleSerializer, ArticlesCategories, UserofArticle
-from .paginators import ArticlePagination
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsUserPost
@@ -13,7 +12,6 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 class ArticleCRUD(ModelViewSet):
     queryset = Articles.objects.all().order_by("-created")
     serializer_class = ArticleSerializer
-    pagination_class = ArticlePagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('category', 'created_by',)
     permission_classes = [IsAuthenticatedOrReadOnly, IsUserPost]
@@ -34,12 +32,10 @@ class ArticleCRUD(ModelViewSet):
 class GetCategories(ListAPIView):
     queryset = Articles.objects.values_list("category", flat=True).distinct().order_by('-category')
     serializer_class = ArticlesCategories
-    pagination_class = ArticlePagination
 
 
 class GetUsersofArticles(ListAPIView):
     queryset = Articles.objects.values_list("created_by", flat=True).distinct().order_by('-created_by')
     serializer_class = UserofArticle
-    pagination_class = ArticlePagination
 
 

@@ -10,7 +10,6 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly, IsAuthenticated
 from rest_framework.generics import ListAPIView
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-from .paginators import AllQuizPagination
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -69,7 +68,6 @@ class QuizCRUD(ModelViewSet):
     serializer_class = QuizSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    pagination_class = AllQuizPagination
     filter_backends = [OrderingFilter]
     ordering = '-created'
 
@@ -82,7 +80,6 @@ class AllQuiz(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = QuizSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
-    pagination_class = AllQuizPagination
     filter_backends = [OrderingFilter, DjangoFilterBackend]
     filterset_fields = ('category', 'teacher')
     ordering = '-created'
@@ -91,7 +88,6 @@ class AllQuiz(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 class get_all_Categories(ListAPIView):
     queryset = Quiz.objects.values_list('category', flat=True).distinct()
     serializer_class = CategoriesSerializer
-    pagination_class = AllQuizPagination
     filter_backends = [OrderingFilter]
     ordering = 'category'
     
@@ -99,7 +95,6 @@ class get_all_Categories(ListAPIView):
 class get_all_Teachers(ListAPIView):
     queryset = Quiz.objects.values_list('teacher', flat=True).distinct()
     serializer_class = TeacherSerializer
-    pagination_class = AllQuizPagination
     filter_backends = [OrderingFilter]
     ordering = 'teacher'
 

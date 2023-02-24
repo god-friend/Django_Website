@@ -7,7 +7,6 @@ from .serializers import UserSerializer, UsernameOrCategorySerializer
 from .models import CustomUser
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.generics import RetrieveAPIView
-from quiz.paginators import AllQuizPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -15,7 +14,6 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED
 from article.models import Articles
 from article.serializers import ArticleSerializer
-from article.paginators import ArticlePagination
 from article.permissions import IsUserPost
 from rest_framework.authentication import authenticate
 from rest_framework.filters import SearchFilter
@@ -159,7 +157,6 @@ def user_logout(request):
 class QuizView(ModelViewSet):
     queryset = Quiz.objects.all().order_by('-created')
     serializer_class = QuizSerializer
-    pagination_class = AllQuizPagination
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsUserPost, IsAuthenticatedOrReadOnly]
     renderer_classes = [TemplateHTMLRenderer]
@@ -215,13 +212,13 @@ class StudentDataView(RetrieveAPIView):
 class ArticlesView(ModelViewSet):
     queryset = Articles.objects.all().order_by("-created")
     serializer_class = ArticleSerializer
-    pagination_class = ArticlePagination
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'article/article.html'
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ("category", "created_by")
+    search_fields = ['title', 'category']
 
     def create(self, request, *args, **kwargs):
         data = request.data
