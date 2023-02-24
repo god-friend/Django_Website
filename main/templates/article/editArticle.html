@@ -1,0 +1,86 @@
+{%extends 'base.html'%}
+{%load static%}
+{%load custom_filters%}
+
+{%block title%}Edit {{article.title}}{%endblock title%}
+
+{%block head%}
+<script type="text/javascript" src="{% static 'article/m_article.js' %}"></script>
+{%endblock head%}
+
+{%block body_content%}
+<div class="container mt-2">
+    <div class="card-header text-center">
+        Article ==> <b>{{article.title}}</b>
+    </div>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active" id="title-tab" data-toggle="tab" data-target="#title" type="button" role="tab" aria-selected="true">Edit Title</button>
+          <button class="nav-link" id="category-tab" data-toggle="tab" data-target="#category" type="button" role="tab"  aria-selected="false">Edit Category</button>
+          <button class="nav-link" id="body-tab" data-toggle="tab" data-target="#body" type="button" role="tab"  aria-selected="false">Edit Body</button>
+          <button class="btn btn-danger" onclick="deleteArticle('{{article.id}}', '{{article.title}}')">Delete Article</button>
+
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <!-- For Title -->
+        <div class="tab-pane fade show active" id="title" role="tabpanel" aria-labelledby="title-tab">
+            <form id="edit-title">
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Title :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" name="title" value="{{article.title}}" class="form-control" required>
+                    </div>
+                </div>
+                <input type="hidden" value="{{article.id}}" name="id" required>
+                <div class="row mt-1">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary w-100">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- For Category -->
+        <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
+            <form id="edit-category">
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Category :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" name="category" value="{{article.category}}" class="form-control" required>
+                    </div>
+                </div>
+                <input type="hidden" value="{{article.id}}" name="id" required>
+                <div class="row mt-1">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary w-100">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- For Body -->
+        <div class="tab-pane fade" id="body" role="tabpanel" aria-labelledby="body-tab">
+            <form id="edit-body">
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Body :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="article" value="" class="form-control" style="height: 250px;">{{article.article}}</textarea>
+                    </div>
+                </div>
+                <input type="hidden" value="{{article.id}}" name="id" required>
+                <div class="row mt-1">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary w-100">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+      </div>
+
+</div>
+{%endblock body_content%}

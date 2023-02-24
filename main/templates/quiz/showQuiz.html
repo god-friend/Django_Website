@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{%load static%}
+{%load custom_filters%}
+{%block title%} {{quiz.title}} {%endblock title%}
+
+{%block head%}
+<script src="{% static 'quiz/quiz.js' %} " type="text/javascript"></script>
+{%endblock head%}
+
+
+{%block body_content%}
+
+    {% if request.user.is_authenticated %}
+        
+        <div class="card" id="quiz">
+            <div class="card-header" style = "font-size: 24px; font-weight: bold;">
+                {{quiz.items|get_key}}
+            </div>
+            {%if request.user|toString == quiz.teacher %}
+            <div class="container mt-1">
+                <a class="btn btn-primary w-100" href="{% url 'edit_quiz-detail' quiz.title  %}" >Edit Quiz</a>&nbsp;
+            </div>
+            {%endif%}
+            {%if request.user.role == "ST"%}
+            <div class="mt-1">
+                <button class="btn btn-danger w-100" onclick="leavedQuiz('{{quiz.title}}', '{{request.user}}')">Leave</button>&nbsp;
+            </div>
+            {%endif%}
+
+            {% setvar quiz.questions|len as n%}
+            {% setvar quiz.questions as questions %}
+            {% setvar 1|setrange:n as total %}
+
+            {% for i in total %}
+            <div class="card-body">
+                {% setvar i|toString as key %}
+                {% setvar questions|get_key:key as data %}
+                <h5 class="card-title">Question {{ i }} :: {{data.question}}</h5>
+                {% if request.user.role == "TE" %}
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" disabled>{{data.choices.0}}</button>&nbsp;
+                        <button class="btn btn-secondary" disabled>{{data.choices.1}}</button>&nbsp;
+                        <button class="btn btn-secondary" disabled>{{data.choices.2}}</button>&nbsp;
+                        <button class="btn btn-secondary" disabled>{{data.choices.3}}</button>&nbsp;
+                    </div>
+                    <h5 class="card-title" style="color: green">Answer :: {{data.answer}}</h5>
+                {% elif request.user.role == "ST" %}
+                    <div class="btn-group" >
+                        <button class="btn btn-secondary c{{i}}" onclick="check_answer('{{data.answer}}', '{{data.choices.0}}', event)">{{data.choices.0}}</button>&nbsp;
+                        <button class="btn btn-secondary c{{i}}" onclick="check_answer('{{data.answer}}', '{{data.choices.1}}', event)">{{data.choices.1}}</button>&nbsp;
+                        <button class="btn btn-secondary c{{i}}" onclick="check_answer('{{data.answer}}', '{{data.choices.2}}', event)">{{data.choices.2}}</button>&nbsp;
+                        <button class="btn btn-secondary c{{i}}" onclick="check_answer('{{data.answer}}', '{{data.choices.3}}', event)">{{data.choices.3}}</button>&nbsp;
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            {%if request.user.role == "ST"%}
+            <div class="mt-1">
+                <button class="btn btn-primary w-100" onclick="submitQuiz('{{quiz.title}}', '{{request.user}}', '{{n}}')">Submit</button>
+           </div>
+            {%endif%}
+        </div>
+    {%else%}
+    <script>
+        alert("Please Log in to see Quiz");
+        history.back();
+    </script>
+    {% endif %}
+
+{%endblock body_content%}

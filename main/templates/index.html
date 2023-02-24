@@ -2,33 +2,28 @@
 {%load static%}
 {%load custom_filters%}
 
-{%block head%}
-<script src="{% static 'globals.js' %}" type="text/javascript"></script>
-<script src="{% static 'index.js' %}" type="text/javascript"></script>
-{%endblock head%}
-
 {%block body_content%}
 <div class="card text-center border-dark ">
-    <div class="card-header"> Quizes </div>
+    <div class="card-header" style="font-size: 26px; font-weight: bold;"> Quizes </div>
     <ul class="list-group list-group-flush">
     {% for quiz in  quizes%}
-    <li class="list-group-item"><b>{{quiz}}</b>&nbsp;
+    <a type="button" class="btn btn-light btn-lg" href="{% url 'quiz_view-detail' quiz.title %}"><b>{{quiz}}</b>&nbsp;
         <small style="font-size:12px;">by <b>{{quiz.teacher|fullname}}</b></small>
-    </li>
+    </a>
     {% endfor %}
     </ul>
-    <a type="button" class="btn btn-secondary" href="{% url 'quiz' %}">Show All</a>
+    <a type="button" class="btn btn-secondary" href="{% url 'quiz_view-list' %}">Show All</a>
 </div>
 
 <div class="card text-center border-dark mt-2">
-    <div class="card-header"> Articles </div>
+    <div class="card-header" style="font-size: 26px; font-weight: bold;"> Articles </div>
     <ul class="list-group list-group-flush">
     {% for article in  articles%}
-    <li class="list-group-item"><b>{{article}}</b>&nbsp;
+    <a class="btn btn-light btn-lg" type="button" href="{% url 'article_view-detail' article.id %}"><b>{{article}}</b>&nbsp;
         <small style="font-size:12px;">by <b>{{article.created_by|fullname}}</b></small>
-    </li>
+    </a>
     {% endfor %}
     </ul>
-    <a type="button" class="btn btn-secondary" href="{% url 'article' %}">Show All</a>
+    <a type="button" class="btn btn-secondary" href="{% url 'article_view-list' %}">Show All</a>
 </div>
 {%endblock body_content%}

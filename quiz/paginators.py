@@ -4,7 +4,7 @@ from rest_framework.response import Response
 class AllQuizPagination(PageNumberPagination):
     max_page_size = 5
     page_query_param = 'nxt'
-    page_size = 2
+    page_size = 1
     page_size_query_param = 'show'
     last_page_strings = ('end', )
 

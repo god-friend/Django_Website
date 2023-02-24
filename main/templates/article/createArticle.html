@@ -2,16 +2,10 @@
 {% load static %}
 {% load custom_filters %}
 
-{%block head%}
-<script src="{% static 'globals.js' %}"></script>
-<script src="{% static 'article/create.js' %}"></script>
-{%endblock head%}
-
-
 {% block user_body %}
-{%if request.user.is_authenticated%}
 <div class="container mt-2">
-    <form type="'post" id="new-article">
+    <form method="post" action="{% url 'article_view-list' %}">
+        {%csrf_token%}
         <div class="row">
             <label class="col-sm-2" style="font-weight:bold;">Title :: </label>
             <div class="col-sm-10">
@@ -42,5 +36,4 @@
         </div>
     </form>
 </div>
-{%endif%}
 {%endblock user_body %}

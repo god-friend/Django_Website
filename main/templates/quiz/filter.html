@@ -3,25 +3,60 @@
 {%load custom_filters%}
 
 {% block title %}Filter Quiz {% endblock title %}
+
 {%block head%}
-<script type="text/javascript">
-    var current_user = "{{request.user}}";
-    var role = "{{request.user.role}}";
-</script>
-<script src="{% static 'globals.js' %}" type="text/javascript"></script> 
-<script src="{% static 'quiz/quiz.js' %}" type="text/javascript"></script>
-<script src="{% static 'quiz/filterQuiz.js' %}" type="text/javascript"></script>
+<style>
+    .max-flow{
+        max-height: 300px;
+        overflow-y: auto;
+    }
+</style>
+
 {%endblock head%}
 
 {% block body_content %}
 
-<div class="btn-group">
-    <button class="btn btn-primary" onclick="show_categories()">By Categories</button>&nbsp;
-    <button class="btn btn-primary" onclick="show_teachers()">By Teachers</button>
-</div>
+{%if btns == 1 %}
+    <div class="btn-group">
+        <div>
+            <form method="post" action="{% url 'fQuiz' %}">
+                {%csrf_token%}
+                <input required type="hidden" value="category" name="type">
+                <button class="btn btn-primary" type="submit">By Categories</button>
+            </form>
+        </div>
+        &nbsp;
+        <div>
+            <form method="post" action="{% url 'fQuiz' %}">
+                {%csrf_token%}
+                <input required type="hidden" value="teacher" name="type">
+                <button class="btn btn-primary" type="submit">By Teachers</button>
+            </form>
+        </div>
+    </div>
 
-<div class="container mt-2" id="filter"></div>
+{%elif btns == 0%}
+    <div class="container mt-2 ">
+        <div class="card">
+            <div class="card-header text-center" style="font-size: 26px;">
+                All {{type}}
+            </div>
+            <ul class="list-group list-group-flush max-flow">
+                {% for value in data %}
+                    {%if type == "Categories" %}
+                        <a type="button" class="btn btn-light btn-lg" href="{% url 'quiz_view-list' %}?category={{value}}">
+                            {{value}}
+                        </a>
+                    {%elif type == "Teachers"%}
+                        <a type="button" class="btn btn-light btn-lg" href="{% url 'quiz_view-list' %}?teacher={{value}}">
+                            {{value|fullname}}
+                        </a>
+                    {%endif%}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{%endif%}
 
-<div class="card" id="quiz"></div>
 
 {% endblock body_content %}

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, Permission
 from main.models import CustomUser
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 
 def create_group():
@@ -39,3 +39,10 @@ class UserSerializer(ModelSerializer):
             student = Group.objects.get(name="Students")
             new_user.groups.add(student)
         return new_user
+   
+    
+class UsernameOrCategorySerializer(Serializer):
+
+    def to_representation(self, instance):
+        return instance
+    

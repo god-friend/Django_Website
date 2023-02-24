@@ -1,0 +1,218 @@
+{%extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{%block title%}Edit {{quiz.title}} {%endblock title%}
+
+{%block head%}
+<script src="{% static 'quiz/m_quiz.js' %} " type="text/javascript"></script>
+{%endblock head%}
+
+{%block body_content%}
+<div class="card">
+    <div class="card-header text-center">
+        Quiz ==> <b>{{quiz.title}}</b>
+    </div>
+</div>
+<div class="container m-1">
+    
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="edit-tab" data-toggle="tab" data-target="#edit-questions" type="button" role="tab"  aria-selected="false">
+                Edit Question
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="question-tab" data-toggle="tab" data-target="#add-questions" type="button" role="tab" aria-selected="true">
+                 Add Question
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="title-tab" data-toggle="tab" data-target="#edit-title" type="button" role="tab" aria-selected="false">
+                Edit Title
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="category-tab" data-toggle="tab" data-target="#edit-category" type="button" role="tab" aria-selected="false">
+                Edit Category
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="deleteQ-tab" data-toggle="tab" data-target="#delete-question" type="button" role="tab" aria-selected="false">
+                Delete Questions
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="btn btn-danger" type="button" onclick="deleteQuiz('{{quiz.title}}')">
+                Delete This Quiz
+            </button>
+        </li>
+    </ul>
+      
+    <div class="tab-content" id="myTabContent">
+        <!-- For Editing Existing Questions -->
+        <div class="tab-pane fade show active" id="edit-questions" role="tabpanel" aria-labelledby="edit-tab">
+            {% setvar quiz.questions|len as n%}
+            {% setvar quiz.questions as questions %}
+            {% setvar 1|setrange:n as total %}
+
+            {% for i in total %}
+            {% setvar i|toString as key %}
+            {% setvar questions|get_key:key as data %}
+            <p>
+                <button class="btn btn-primary" type="button" id="btnq{{key}}" data-toggle="collapse" data-target="#question{{key}}" aria-expanded="false" aria-controls="collapseExample">
+                  Question {{i}}. {{data.question}}
+                </button>
+            </p>
+            <div class="collapse" id="question{{key}}">
+                <form id="update-question{{key}}" method="post">
+                    <div class="row mt-1">
+                        <div class="col-sm-4">
+                            <label class="form-label" style="font-weight: bold;">Question :: </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" name="question" class="form-control" required value="{{data.question}}">
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-4">
+                            <label class="form-label" style="font-weight: bold;">Choices :: </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="choice1" class="form-control" required value="{{data.choices.0}}">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="choice2" class="form-control" required value="{{data.choices.1}}">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="choice3" class="form-control" required value="{{data.choices.2}}">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="choice4" class="form-control" required value="{{data.choices.3}}">
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-sm-4">
+                            <label class="form-label" style="font-weight: bold;">Answer :: </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" name="answer" class="form-control" required value="{{data.answer}}">
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{key}}" name="key">
+                    <input type="hidden" value="{{quiz.title}}" name="title">
+                    <div class="row mt-1">
+                        <div class="col-sm-12 w-100">
+                            <button type="button" class="btn btn-secondary" id="{{key}}" onclick="update_question(event)">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- For Adding More Questions one at a time -->
+        <div class="tab-pane fade" id="add-questions" role="tabpanel" aria-labelledby="question-tab">
+            <form id="append-question" method="post">
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Question :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input required type="text" name="question" class="form-control">
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Choices :: </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input required type="text" name="choice1" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <input required type="text" name="choice2" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <input required type="text" name="choice3" class="form-control">
+                    </div>
+                    <div class="col-sm-2">
+                        <input required type="text" name="choice4" class="form-control">
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Answer :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input required type="text" name="answer" class="form-control">
+                    </div>
+                </div>
+                <input type="hidden" name="title" value="{{quiz.title}}">
+                <div class="row mt-1">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary w-100" type="submit">Add Question </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- For Updating Title -->
+        <div class="tab-pane fade" id="edit-title" role="tabpanel" aria-labelledby="title-tab">
+            <form id="set-title" method="post">
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Title :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input class="form-control" name="title" required value="{{quiz.title}}">
+                    </div>
+                </div>    
+                <input required type="hidden" name="old_title" value="{{quiz.title}}">
+                <div class="row mt-1">
+                    <div class="col-sm-12">
+                        <button class="btn btn-secondary w-100" type="submit">Update </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- For Changing Category -->
+        <div class="tab-pane fade" id="edit-category" role="tabpanel" aria-labelledby="category-tab">
+            <form id="set-category" method="post">
+                <div class="row mt-1">
+                    <div class="col-sm-4">
+                        <label class="form-label" style="font-weight: bold;">Category :: </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input class="form-control" name="category" required value="{{quiz.category}}">
+                    </div>
+                </div>    
+                <input required type="hidden" name="title" value="{{quiz.title}}">
+                <div class="row mt-1">
+                    <div class="col-sm-12">
+                        <button class="btn btn-secondary w-100" type="submit">Update </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- For Deleting Questions -->
+        <div class="tab-pane fade" id="delete-question" role="tabpanel" aria-labelledby="deleteQ-tab">
+                {%setvar quiz.questions as questions%}
+                {%setvar questions|len as n%}
+                {%setvar 1|setrange:n as total%}
+                {%for i in total%}
+
+                    {%setvar i|toString as key%}
+                    {%setvar questions|get_key:key as data%}
+                    <div >
+                        <button type="button" class="btn btn-danger w-100 mt-1" onclick="delete_question('{{key}}', '{{quiz.title}}')"> Question {{key}}:: <b>{{data.question}}</b></button>
+                    </div>
+                {%endfor%}
+        </div>
+    </div>
+
+</div>
+
+{%endblock body_content%}
