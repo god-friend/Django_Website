@@ -55,7 +55,7 @@ $(document).ready(
             location.reload();
         })
 
-        // Form Edit Title
+        // Form Edit Body
         $("#edit-body").on("submit", (e)=>{
             e.preventDefault();
             var data = $("#edit-body").serialize();
