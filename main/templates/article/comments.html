@@ -1,0 +1,70 @@
+{%load custom_filters%}
+<div class="border-2 border border-top-0 border-bottom-0 px-2">
+    
+        <div class="mt-4" ><b>{{comment.user|fullname}}</b>
+            {%if comment.parent.user %}
+                to <b style="color:cadetblue;">{{comment.parent.user|fullname}}</b>
+            {%endif%}
+            
+            <small class="text-muted">on {{comment.created}}</small>
+            
+        </div>
+        <div class="border p-2 rounded">
+            <span id="{{comment.id}}">{{comment.comment}}</span>
+            
+            <div class="float-end">
+                {%if comment.user != request.user%}
+                <a class="btn btn-link btn-block btn-sm" data-bs-toggle="collapse" href="#c{{comment.id}}" role="button" aria-expanded="false">
+                    reply
+                </a>
+                {%endif%}
+                {%if comment.user == request.user%}
+                <button class="btn btn-outline-success btn-sm" data-bs-toggle="collapse" href="#e{{comment.id}}" role="button" aria-expanded="false">
+                    Edit
+                </button>
+                <button class="btn btn-outline-danger btn-sm" value="{{comment.id}}" onclick="deleteComment(event)">
+                    Delete
+                </button>
+                {%endif%}
+            </div>
+            
+            <div class="collapse" id="c{{comment.id}}">
+                <form method="post" action="{% url 'comment' %}">
+                    {%csrf_token%}
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input type="text" name="comment" required class="form-control">
+                            </div>
+                            <input type="hidden" value="{{article.id}}" name="for_article">
+                            <input type="hidden" value="{{request.user}}" name="user">
+                            <input type="hidden" value="{{comment.id}}" name="parent">
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-outline-success w-100 btn-sm">Reply</button>
+                            </div>
+                        </div>
+                  </form>
+            </div>
+            <div class="collapse" id="e{{comment.id}}">
+                <form id="edit-comment{{comment.id}}" method="post">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input type="text" name="comment" value="{{comment.comment}}" required class="form-control">
+                            </div>
+                            <input type="hidden" value="{{comment.id}}" name="cid">
+                            <input type="hidden" value="{{article.id}}" name="for_article">
+                            <input type="hidden" value="{{request.user}}" name="user">
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-outline-success w-100 btn-sm" onclick="editComment('{{comment.id}}')">Edit</button>
+                            </div>
+                        </div>
+                  </form>
+            </div>
+            
+        </div>
+
+
+
+    {%for reply in comment.all_replies%}
+        {% include 'article/comments.html' with comment=reply%}
+    {%endfor%}
+</div>

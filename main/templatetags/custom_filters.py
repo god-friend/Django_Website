@@ -2,12 +2,11 @@ from django.template import Library
 from json import dumps
 from datetime import datetime
 from main.models import CustomUser
+from article.models import Notification
 
 register = Library()
 
 def get_key(query, key="title"):
-    # print(query)
-    # print(type(key))
     query = dict(query)
     return query[key]
 
@@ -28,7 +27,6 @@ def get_fullname(username):
     return fullname
 
 def setvar(var=None):
-    # print(var)
     return var
 
 def to_list(*args):
@@ -41,16 +39,23 @@ def get_length(var):
     return len(var)
 
 def to_string(var):
-    # print(var)
     return str(var)
+
+def get_unread_notifications(user):
+    return Notification.objects.filter(is_read=False, for_user=user).exclude(by_user=user).order_by('-created')
+
+def get_read_notifications(user):
+    return Notification.objects.filter(is_read=True, for_user=user).exclude(by_user=user).order_by('-created')[:10]
 
 
 register.filter('get_key', get_key)
 register.filter('json', get_json)
 register.filter('f_date', filter_date)
 register.filter('fullname', get_fullname)
-register.simple_tag(setvar)
-register.simple_tag(to_list)
 register.filter('setrange',setrange)
 register.filter('len', get_length)
 register.filter('toString', to_string)
+register.filter('unread', get_unread_notifications)
+register.filter('readed', get_read_notifications)
+register.simple_tag(setvar)
+register.simple_tag(to_list)

@@ -14,7 +14,7 @@
         <a class="btn btn-light btn-lg" type="button" href="{% url 'article_view-detail' article.id %}">
             <b>{{article.items|get_key}}</b>&nbsp;
             <small style="font-size: 16px;">created by &nbsp;<b>{{fullname}}</b>
-            <p style="font-size: 14px; color: lightslategray;">at {{article.items| get_key:"created"| f_date}}</p>
+            <p style="font-size: 14px; color: lightslategray;">at {{article.created|f_date}}</p>
             </small>
         </a>
         {%endfor%}

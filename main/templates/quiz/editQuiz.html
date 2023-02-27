@@ -19,31 +19,31 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="edit-tab" data-toggle="tab" data-target="#edit-questions" type="button" role="tab"  aria-selected="false">
+            <button class="nav-link active" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit-questions" type="button" role="tab" aria-selected="true">
                 Edit Question
             </button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="question-tab" data-toggle="tab" data-target="#add-questions" type="button" role="tab" aria-selected="true">
+            <button class="nav-link" id="question-tab" data-bs-toggle="tab" data-bs-target="#add-questions" type="button" role="tab" aria-selected="false">
                  Add Question
             </button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="title-tab" data-toggle="tab" data-target="#edit-title" type="button" role="tab" aria-selected="false">
+            <button class="nav-link" id="title-tab" data-bs-toggle="tab" data-bs-target="#edit-title" type="button" role="tab" aria-selected="false">
                 Edit Title
             </button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="category-tab" data-toggle="tab" data-target="#edit-category" type="button" role="tab" aria-selected="false">
+            <button class="nav-link" id="category-tab" data-bs-toggle="tab" data-bs-target="#edit-category" type="button" role="tab" aria-selected="false">
                 Edit Category
             </button>
         </li>
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="deleteQ-tab" data-toggle="tab" data-target="#delete-question" type="button" role="tab" aria-selected="false">
+            <button class="nav-link" id="deleteQ-tab" data-bs-toggle="tab" data-bs-target="#delete-question" type="button" role="tab" aria-selected="false">
                 Delete Questions
             </button>
         </li>
@@ -65,7 +65,7 @@
             {% setvar i|toString as key %}
             {% setvar questions|get_key:key as data %}
             <p>
-                <button class="btn btn-primary" type="button" id="btnq{{key}}" data-toggle="collapse" data-target="#question{{key}}" aria-expanded="false" aria-controls="collapseExample">
+                <button class="btn btn-primary" type="button" id="btnq{{key}}" data-bs-toggle="collapse" data-bs-target="#question{{key}}" aria-expanded="false" >
                   Question {{i}}. {{data.question}}
                 </button>
             </p>

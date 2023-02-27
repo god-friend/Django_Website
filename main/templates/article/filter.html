@@ -35,8 +35,10 @@
 
     {%elif btns == 0%}
         <div class="container">
-            <div class="card-header">
-                All {{type}}
+            <div class="card">
+                <div class="card-header text-center" style="font-size: 24px; font-weight: bold;">
+                    All {{type}}
+                </div>
             </div>
             <ul class="list-group list-group-flush max-flow">
                 {% for value in data %}

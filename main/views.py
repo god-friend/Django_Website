@@ -12,8 +12,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.status import HTTP_405_METHOD_NOT_ALLOWED
-from article.models import Articles
-from article.serializers import ArticleSerializer
+from article.models import Articles, Comments, Notification
+from article.serializers import ArticleSerializer, CommentSerializer
 from article.permissions import IsUserPost
 from rest_framework.authentication import authenticate
 from rest_framework.filters import SearchFilter
@@ -97,7 +97,6 @@ def create_quiz_user(request):
 
 @api_view(['get', 'post'])
 def search_quiz(request):
-    print(request.path, request.META['HTTP_REFERER'])
     search = request.data['search']
     return redirect('/allQuiz/?search='+search)
 
@@ -128,7 +127,6 @@ def filter_articles(request):
     if request.method == 'GET':
         return render(request, 'article/filter.html', context={"btns": 1})
     if request.method == 'POST':
-        print(request.data)
         data = request.data
         if data['type'] == "category":
             qType = "Categories"
@@ -153,6 +151,44 @@ def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('/')
+
+@api_view(['post', 'delete', 'patch'])
+def comment(request):
+    if request.method == 'POST':
+        data = request.data
+        data._mutable = True
+        del data['csrfmiddlewaretoken']
+        serialize = CommentSerializer(data=data)
+        if serialize.is_valid():
+            serialize.save()
+            return redirect("/article/{pk}".format(pk=serialize.data['for_article']))
+    if request.method == 'DELETE':
+        cid = request.data['id']
+        obj = Comments.objects.get(pk=int(cid))
+        obj.delete()
+        return HttpResponse("Comment Deleted") 
+
+    if request.method == 'PATCH':
+        data = request.data
+        obj = Comments.objects.get(pk=data['cid'])
+        obj.comment = data['comment']
+        obj.save()
+        return Response({"comment": obj.comment})
+        
+    return HttpResponse("Error....Erro...Err..Er.E.")
+    
+@api_view(['patch'])
+def notification(request):
+    if request.method == 'PATCH':
+        data = request.data
+        if data['id'] != '-1' and data['mark_all'] == '0':
+            obj = Notification.objects.get(pk=data['id'])
+            obj.is_read = True
+            obj.save()
+        elif data['id'] == '-1' and data['mark_all'] == '1':
+            objs = Notification.objects.filter(is_read=False, for_user=data['user'])
+            objs.update(is_read=True)
+        return HttpResponse("updated")
 
 class QuizView(ModelViewSet):
     queryset = Quiz.objects.all().order_by('-created')
@@ -234,7 +270,10 @@ class ArticlesView(ModelViewSet):
         article = self.get_object()
         serialize = self.get_serializer(article)
         if str(request.path) == "/article/{pk}/".format(pk=kwargs['pk']):
-            return render(request, 'article/showArticle.html', context={"article": serialize.data})
+            
+            comments = Comments.objects.filter(for_article=kwargs['pk'])
+            return render(request, 'article/showArticle.html', context={"article": serialize.data, "comments": comments})
+        
         elif str(request.path) == "/article/edit/{pk}/".format(pk=kwargs['pk']):
             return render(request, 'article/editArticle.html', context={"article": serialize.data})
         

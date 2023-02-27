@@ -4,7 +4,7 @@
 
 {%block body_content%}
 {% if request.user.is_authenticated %}
-<div class="btn-group mt-1" role="group" aria-label="Basic example">
+<div class="btn-group mt-1" role="group">
     {% if request.user.role == "TE" %}
     {% setvar request.user|toString as teacher %}
     <a type="button" class="btn btn-primary" href="{% url 'quiz_view-list' %}?teacher={{teacher}}">My Quizez</a>&nbsp;

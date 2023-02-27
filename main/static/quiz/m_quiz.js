@@ -62,7 +62,7 @@ $(document).ready(
             quiz['questions'] = JSON.stringify(quiz_questions);
 
             update_userQuiz(quiz, quiz['title']);
-            $("#append-question").trigger('reset');
+            location.reload();
         })
 
         // Form Change Title

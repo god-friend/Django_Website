@@ -2,7 +2,7 @@ from django.db import models
 from main.models import CustomUser
 
 class Quiz(models.Model):
-    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'TE'}, related_name='user')
+    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, limit_choices_to={'role': 'TE'})
     title = models.CharField(max_length=256, primary_key=True)
     category = models.CharField(max_length=100, default="Programming")
     created = models.DateTimeField(auto_now=True)

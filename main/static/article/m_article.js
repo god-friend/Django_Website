@@ -31,6 +31,24 @@ function deleteArticle(id, title){
     
 }
 
+function update_comment(updated){
+    var response = null;
+    $.ajax({
+        url: "http://" + location.host + "/comment/",
+        type: 'patch',
+        data: updated,
+        headers: {
+            'X-Csrftoken': get_csrf(),
+        },
+        async: false,
+        success: (res) => {
+            response = res;
+            
+        }
+    })
+    return response;
+}
+
 $(document).ready(
     (e) => {
         // Form Edit Title
@@ -65,6 +83,41 @@ $(document).ready(
             update_userArticle(id, in_json);
             location.reload();
         })
-
     }
 )
+
+function deleteComment(e){
+    e.preventDefault();
+    var comment_id = e.target.value;
+    var data = {
+        "id": comment_id,
+    }
+
+    if(confirm("You sure you want to delete this comment")){
+        $.ajax({
+            url: "http://" + location.host + "/comment/",
+            type: 'delete',
+            async: false,
+            data: data,
+            headers: {
+                "X-Csrftoken": get_csrf(),
+            },
+            success: (data)=>{
+                alert(data);
+            } 
+        })
+        location.reload();
+    }
+}
+
+function editComment(id){
+    var form_id = "#edit-comment" + id;
+    var data = $(form_id).serialize();
+    var in_json = convertFormtoJSON(data);
+    var comment = update_comment(data);
+
+    document.getElementById(in_json['cid']).innerHTML = comment['comment'];
+    var eid = "#e"+in_json['cid'];
+    $(eid).collapse("hide");
+
+}

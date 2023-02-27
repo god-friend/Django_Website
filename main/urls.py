@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import user_logout, QuizView, UserView, profile_page, create_quiz_user, StudentDataView, filter_quiz, search_quiz
 from .views import ArticlesView, create_article, filter_articles
-from .views import index, loginUser, signupUser
+from .views import index, loginUser, signupUser, comment, notification
 
 routeList = (
     ('allQuiz', QuizView, 'quiz_view'),
@@ -27,5 +27,7 @@ urlpatterns = [
     path('profile/newArticle/', create_article, name='createArticle'),
     path('filterArticle/', filter_articles, name='fArticle'),
 
+    path('comment/', comment, name='comment'),
+    path('notification/', notification, name='notify'),
     path('logout/', user_logout, name='logout'),
 ]

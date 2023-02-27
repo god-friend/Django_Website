@@ -4,6 +4,9 @@
 
 {%block title%} {{article.title}} {%endblock title%}
 
+{%block head%}
+<script src="{% static 'article/m_article.js' %}"></script>
+{%endblock head%}
 
 {%block body_content%}
 
@@ -15,7 +18,7 @@
         <div class="card-header text-center" style="font-size: 26px; font-weight:bold;">
             {{article.title}}
         </div>
-        <div class="card-title text-right mt-1 align-bottom">
+        <div class="card-title text-end mt-1 align-bottom">
             <small>created by</small>
             <b style="font-size: 17px">{{article.created_by|fullname}}</b>&nbsp;
             <hr class="hr ">
@@ -25,6 +28,53 @@
         </div>
         </ul>
     </div>
+
+{%if request.user.is_authenticated%}
+
+    <div class="mt-2">
+        <a class="btn btn-link btn-block text-left" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false">
+          Add Comment
+        </a>
+    </div>
+    <div class="collapse mt-1" id="collapseExample">
+        <div class="card card-body">
+          <form id="new-comment" method="post" action="{% url 'comment' %}">
+            {%csrf_token%}
+                <div class="row">
+                    <div class="col-sm-10">
+                        <input type="text" name="comment" required class="form-control">
+                    </div>
+                    <input type="hidden" value="{{article.id}}" name="for_article">
+                    <input type="hidden" value="{{request.user}}" name="user">
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-success w-100">Comment</button>
+                    </div>
+                </div>
+          </form>
+        </div>
+    </div>
+{%endif%}
+
+    <div class="card mt-2">
+        {%if comments%}
+        <div class="card-header">
+            All Comments
+        </div>
+        {%else%}
+        <div class="card-header">
+            No Comments
+        </div>
+        {%endif%}
+    </div>
+    {%for comment in comments%}
+            {%if comment.is_parent%}
+                {%include 'article/comments.html' with comment=comment%}
+            {%endif%}
+    {%endfor%}
 </div>
+
+
+
+
 
 {%endblock body_content%}

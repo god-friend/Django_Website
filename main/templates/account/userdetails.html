@@ -40,7 +40,7 @@
                 <label><b>Last Login :: </b></label>
             </div>
             <div class="col-sm-8">
-                <label class="form-control-plaintext"><b>{{last_login| f_date}} </b></label>
+                <input class="form-control-plaintext" type="text" placeholder="{{last_login| f_date}}" readonly>
             </div>
         </div>
         <div class="row">
@@ -49,7 +49,7 @@
             </div>
             <div class="col-sm-8">
                 {% if role == "TE" %}
-                <label class="form-control-plaintext"><b>Teacher </b></label>
+                <input class="form-control-plaintext" type="text" placeholder="Teacher" readonly>
                 {% elif role == "ST" %}
                 <input class="form-control-plaintext" type="text" placeholder="Student" readonly>
                 {% endif %}

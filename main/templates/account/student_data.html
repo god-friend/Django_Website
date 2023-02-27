@@ -14,8 +14,8 @@
 
 {%block user_body%}
     <div class="container mt-5 btn-group-vertical">
-        <div class="btn-group-vertical dropright mt-1">
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Attempted</button>
+        <div class="btn-group-vertical dropend mt-1">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Attempted</button>
             {% setvar data.items|get_key:"attempted" as attempted %}
             <div class="dropdown-menu scroll" >
                 {% for attempt in attempted reversed %}
@@ -23,17 +23,17 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="btn-group-vertical dropright mt-1">
+        <div class="btn-group-vertical dropend mt-1">
             {% setvar data.items|get_key:"passed" as passed%}
-            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Passed</button>
+            <button class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Passed</button>
             <div class="dropdown-menu scroll">
                 {% for pass in passed reversed %}
                 <label class="dropdown-item w-100"><b>{{pass.0}}</b>&nbsp;  <small>at {{pass.1|f_date}}</small></label>
                 {% endfor %}
             </div>
         </div>
-        <div class="btn-group-vertical dropright mt-1">
-            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Failed</button>
+        <div class="btn-group-vertical dropend mt-1">
+            <button class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Failed</button>
             {% setvar data.items|get_key:"failed" as failed %}
             <div class="dropdown-menu scroll">
                 {% for fail in failed reversed %}
@@ -41,8 +41,8 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="btn-group-vertical dropright mt-1">
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Cleared</button>
+        <div class="btn-group-vertical dropend mt-1">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Cleared</button>
             {% setvar data.items|get_key:"cleared" as completed %}
             <div class="dropdown-menu scroll">
                 {% for complete in completed reversed %}
@@ -50,8 +50,8 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="btn-group-vertical dropright mt-1">
-            <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Leaved</button>
+        <div class="btn-group-vertical dropend mt-1">
+            <button class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Leaved</button>
             {% setvar data.items|get_key:"leaved" as leaved %}
             <div class="dropdown-menu scroll">
                 {% for leave in leaved reversed %}
